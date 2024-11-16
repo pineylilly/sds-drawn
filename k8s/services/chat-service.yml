@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-chat
+  labels:
+    app: drawn-chat-service
+spec:
+  selector:
+    matchLabels:
+      app: drawn-chat-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: drawn-chat-service
+    spec:
+      containers:
+      - name: drawn-chat-management
+        image: sorawit12535/drawn-chat-service:1.1.2
+        ports:
+        - containerPort: 8082
+        env:
+        - name: DATABASE_URL
+          value: ???
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: drawn-chat-service
+spec:
+  type: ClusterIP
+  selector:
+    app: drawn-chat-service
+  ports:
+    - protocol: TCP
+      port: 8082
+      targetPort: 8082

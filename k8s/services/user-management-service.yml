@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-user-management
+  labels:
+    app: drawn-user-management-service
+spec:
+  selector:
+    matchLabels:
+      app: drawn-user-management-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: drawn-user-management-service
+    spec:
+      containers:
+      - name: drawn-user-management
+        image: sorawit12535/drawn-user-management-service:nomail-1.1.6
+        ports:
+        - containerPort: 3000
+        env:
+        - name: DATABASE_URL
+          value: ???
+        - name: JWT_SECRET
+          value: ???
+        - name: JWT_KEY
+          value: ???
+        - name: FIREBASE_API_KEY
+          value: ???
+        - name: FIREBASE_AUTH_DOMAIN
+          value: ???
+        - name: FIREBASE_PROJECT_ID
+          value: ???
+        - name: FIREBASE_STORAGE_BUCKET
+          value: ???
+        - name: FIREBASE_MESSAGING_SENDER_ID
+          value: ???
+        - name: FIREBASE_APP_ID
+          value: ???
+        - name: RABBITMQ_URL
+          value: "amqp://rabbitmq"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: drawn-user-management-service
+spec:
+  type: ClusterIP
+  selector:
+    app: drawn-user-management-service
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000

@@ -1,0 +1,36 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: drawn-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "86400"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2 
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: localhost
+    http:
+      paths:
+      - path: /()(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: drawn-frontend
+            port:
+              number: 3000
+      - path: /api(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: drawn-api-gateway
+            port:
+              number: 8000
+      - path: /gatewaygui(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: drawn-api-gateway
+            port:
+              number: 8002
