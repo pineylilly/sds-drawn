@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  kong:
+    image: sorawit12535/drawn-api-gateway:1.1.1
+    container_name: kong
+    restart: on-failure
+    environment:
+      KONG_PROXY_ACCESS_LOG: /dev/stdout
+      KONG_ADMIN_ACCESS_LOG: /dev/stdout
+      KONG_PROXY_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_LISTEN: 0.0.0.0:8001, 0.0.0.0:8444 ssl
+      KONG_PROXY_LISTEN: 0.0.0.0:8000, 0.0.0.0:9080 http2, 0.0.0.0:9081 http2 ssl
+      KONG_ADMIN_GUI_LISTEN: 0.0.0.0:8002
+    ports:
+      - "8000:8000"
+      - "8443:8443"
+      - "8001:8001"
+      - "8444:8444"
+      - "9080:9080"
+      - "9081:9081"
+      - "8002:8002"
