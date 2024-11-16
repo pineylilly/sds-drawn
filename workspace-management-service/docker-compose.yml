@@ -1,0 +1,31 @@
+version: '3.8'
+
+volumes:
+  workspace-service-db-data: {}
+
+services:
+  workspace-service:
+    build:
+        context: .
+        dockerfile: Dockerfile
+    image: workspace-service
+    container_name: workspace-service
+    restart: always
+    ports:
+      - 3001:3001
+    env_file:
+      - .env
+  workspace-service-db:
+    image: postgres:16.2
+    container_name: workspace-service-db
+    environment:
+      POSTGRES_DB: workspace-service
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5433:5432"
+    volumes:
+      - workspace-service-db-data:/var/lib/postgresql/data
+
+
+      
