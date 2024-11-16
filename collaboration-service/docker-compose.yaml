@@ -1,0 +1,36 @@
+version: '3.6'
+
+volumes:
+  redis_data: {}
+
+networks:
+  ms-net: {}
+
+services:
+  redis:
+    image: redis:latest
+    restart: always
+    # expose:
+    #   - 6379
+    ports:
+      - 6379:6379
+    volumes:
+    - redis_data:/data
+    networks:
+    - ms-net
+  # ms-collab:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   container_name: ms-collab
+  #   ports:
+  #     - 8083:8083
+  #   env_file:
+  #     - .env.local
+  #   restart: always
+  #   networks:
+  #   - ms-net
+  #   depends_on:
+  #     - redis
+
+
