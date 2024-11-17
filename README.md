@@ -116,7 +116,7 @@ For each worker node (Raspberry Pi), performs the following steps:
 
 ### Setting Up Kubernetes
 
-For this cluster, K3s will be used, which is lightweight Kubernetes.
+For this cluster, [K3s](https://docs.k3s.io/) will be used, which is lightweight Kubernetes.
 
 - For the **FIRST master node**, download K3s and set up the server.
 
@@ -145,3 +145,16 @@ For this cluster, K3s will be used, which is lightweight Kubernetes.
   `<FIRST_MASTER_NODE_SERVER>`: The server URI to first master node (for this cluster, it is `https://192.168.0.170:6443`)
 
   `<MY_NODE_IP>`: The IP of current master node (for this cluster, it is `192.168.0.180` and `192.168.0.190`)
+
+- For **each worker node**, downnload K3s and join the cluster.
+
+  ```bash
+  curl -sfL https://get.k3s.io | K3S_URL=<FIRST_MASTER_NODE_SERVER> K3S_TOKEN=<K3S_TOKEN> sh -
+  ```
+
+  Replace the following parameters
+
+  `<FIRST_MASTER_NODE_SERVER>`: The server URI to first master node (for this cluster, it is `https://192.168.0.170:6443`) (or you can use server URI of any master node)
+  
+  `<K3S_TOKEN>`: The token received from previous step
+
