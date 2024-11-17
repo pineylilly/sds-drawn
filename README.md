@@ -101,3 +101,12 @@ cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory
 ```
 sudo reboot
 ```
+
+### Connecting to Router and Setting Up Router
+
+- Plug in router and connect all master and worker nodes to router.
+  - Connect master nodes to router via Wi-Fi (connect laptops to router's Wi-Fi).
+  - Connect worker nodes to router via Ethernet cable.
+
+- Enter [http://192.168.0.1](http://192.168.0.1/) to config the router, the laptop used to config the router must be in the same network as router.
+- 
