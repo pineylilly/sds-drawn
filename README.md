@@ -158,3 +158,23 @@ For this cluster, [K3s](https://docs.k3s.io/) will be used, which is lightweight
   
   `<K3S_TOKEN>`: The token received from previous step
 
+The cluster should look fine now (you can verify by running `kubectl get nodes`). By the way, the pods in the cluster cannot connect to external domain. To fix this, we will configure the DNS resolution of the cluster.
+
+- Editing the CoreDNS configuration.
+
+  ```
+  kubectl -n kube-system edit configmap/coredns
+  ```
+
+- Add the external DNS IP at the `forward` params in `Corefile`. (For this cluster, we will add `8.8.8.8` and `8.8.4.4`)
+
+  ```yaml
+  ...
+  data:
+  Corefile: |
+    .:53 {
+        ...
+        forward . 8.8.8.8 8.8.4.4
+        ...
+    }
+  ```
