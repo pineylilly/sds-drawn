@@ -184,9 +184,14 @@ The cluster should look fine now (you can verify by running `kubectl get nodes`)
   Corefile: |
     .:53 {
         ...
-        forward . 8.8.8.8 8.8.4.4
+        forward . /etc/resolv.conf 8.8.8.8 8.8.4.4
         ...
     }
+  ```
+- Restart the CoreDNS pod to apply the change.
+
+  ```
+  kubectl -n kube-system rollout restart deployment/coredns
   ```
 
 - We don't want to let the K8s scheduler to schedule any pod to master node, so we will taint the master node with `NoSchedule`. Set the taint for every master node as follow.
