@@ -238,6 +238,16 @@ The application we will deploy named "Drawn", which is application for collabora
     - `DATABASE_URL`: The connection string of PostgreSQL database (cloud database), you may create database in [Supabase](https://supabase.com/).
     - `JWT_SECRET`: The secret of JWT, you can set the new random secret.
     - `JWT_KEY`: The key of JWT, you can set the new random key.
+    - `FIREBASE_API_KEY`
+    - `FIREBASE_AUTH_DOMAIN`
+    - `FIREBASE_PROJECT_ID`
+    - `FIREBASE_STORAGE_BUCKET`
+    - `FIREBASE_MESSAGING_SENDER_ID`
+    - `FIREBASE_APP_ID`
+  - Workspace Management Service (`/k8s/services/workspace-management-service.yml`)
+    - `DATABASE_URL`: The connection string of PostgreSQL database (cloud database), which is different from user management service database, you may create database in [Supabase](https://supabase.com/) or use the same database, but choose different schema.
+  - Collaboration Service (`/k8s/services/collaboration-service.yml`)
+    - `DATABASE_URL`: The connection string of MongoDB database (cloud database), you may create database in [MongDB Atlas](https://www.mongodb.com/products/platform/atlas-database).
   
 - Create NGINX Ingress Controller by applying the YAML file.
   
