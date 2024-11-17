@@ -1,4 +1,4 @@
-# High Availability Kubernetes Cluster with Deploying
+![image](https://github.com/user-attachments/assets/a681b9b3-10d6-43ff-b8d7-906376f7b23e)# High Availability Kubernetes Cluster with Deploying
 
 This repository shows how to set up Kubernetes cluster using Ubuntu VMs and Raspberry Pi, and how to deploy application named "Drawn", an application for collaborative drawing.
 
@@ -226,6 +226,26 @@ wget https://github.com/pineylilly/sds-final-project/raw/refs/heads/main/k3s-dis
 - Now you will see notification shown in Discord.
 
   ![image](https://github.com/user-attachments/assets/321a59b7-5b02-41d2-9fd0-acc88a92e533)
+
+## Set Up Firebase Storage
+
+Because our application require Firebase Storage to store images, we need to create project in Firebase and get key for accessing Firebase Storage.
+
+- Create a project in [Firebase](https://firebase.google.com/), then open project settings.
+
+  ![image](https://github.com/user-attachments/assets/32b6bd6e-422f-476a-b900-8d667589017d)
+
+- Go to "SDK Setup and Configuration" and copy configuaration, we will use this in deploying application step.
+
+  ![image](https://github.com/user-attachments/assets/9854456a-fc11-4f8a-a988-c37ed240afcf)
+
+- Go to "Storage" tab at the left side of the page, you will see storage of your project.
+
+  ![image](https://github.com/user-attachments/assets/ebd4d444-6d7e-43e6-bbc9-269104da3ed2)
+
+- Go to "Rule" tab at the top of page, set the configuration so that everyone can read or write files in storage.
+
+  ![image](https://github.com/user-attachments/assets/3d0b3d85-9e41-4c8a-8baf-3efe4502d01f)
 
 ## Deploying an Application
 
