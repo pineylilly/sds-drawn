@@ -178,3 +178,41 @@ The cluster should look fine now (you can verify by running `kubectl get nodes`)
         ...
     }
   ```
+
+### Setting Up Discord Notification
+
+The notification will be shown when the server is initialized or the status of the nodes are changed.
+
+- Download discord notification binary file in the repository at `k3s-discord-notification-nodes directory`. Because our master nodes use Ubuntu VMs, the binary file should be `server-linux-x64-baseline`. (You can navigate in the repository or click this [link](https://github.com/pineylilly/sds-final-project/tree/main/k3s-discord-notification-nodes)). You can download in laptop and copy to master node using SFTP or use wget to download to master nodes directly.
+```
+wget https://github.com/pineylilly/sds-final-project/raw/refs/heads/main/k3s-discord-notification-nodes/server-linux-x64-baseline
+```
+
+- Open Discord and go to settings of the server you want to send notification. Then select "Integrations" tab and select "Webhook".
+
+  ![image](https://github.com/user-attachments/assets/aaa0bcce-7b61-4365-a768-ae02623d172c)
+
+- Create webhook by clicking "New Webhook" button, then change the name of the webhook and choose the channel which you want to let notification sent to. Copy the Webhook URL by clicking "Copy Webhook URL" (we will use this URL later).
+
+  ![image](https://github.com/user-attachments/assets/0bccee5a-b00d-416b-8caa-49d1ab77458b)
+
+- In every master node, create the cron job so that the notification binary file can start running after booting.
+  - Access the crontab
+    
+    ```
+    crontab -e
+    ```
+
+  - Adding a line for running the script after booting.
+
+    ```bash
+    @reboot DISCORD_WEBHOOK_URL=<DISCORD_WEBHOOK_URL> MY_NODE=<MY_NODE_NAME> <PATH_TO_NOTIFICATION_BINARY_FILE>
+    ```
+
+    Replace the following parameters
+    
+    `<DISCORD_WEBHOOK_URL>`: The webhook URL which is copied from the UI where the Discord webhook is created.
+
+    `<MY_NODE_NAME>`: The name of the current master node (which is `sds-k3s-master`, `sds-k3s-master-2`, or `sds-k3s-master-3`)
+
+    `<PATH_TO_NOTIFICATION_BINARY_FILE>`: The path of the binary file of the notification sender downloaded in the step above. (For example, `/home/vboxuser/server-linux-x64-baseline`)
