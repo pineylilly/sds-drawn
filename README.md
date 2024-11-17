@@ -298,3 +298,11 @@ The application we will deploy named "Drawn", which is application for collabora
   ```
 
   __Warning: If your internet speed is slow. It may use very long time to create pods and services or you will get error on pulling images from Docker Hub. If this happen, you may create the services one by one.__
+  
+- You can check if your deployment work well by viewing all pods and services.
+
+  ```
+  kubectl get pods
+  ```
+
+- If your deployment work well, you can access the application by visiting http://localhost in any master node that is in the cluster.
