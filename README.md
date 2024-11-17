@@ -17,3 +17,18 @@ We will use Ubuntu VMs as master nodes of the cluster.
 - Download Ubuntu VM ISO image from https://ubuntu.com/download/desktop.
 - Create 3 VMs of Ubuntu (using Oracle VirtualBox), each VM must be on different laptop.
 - For each VM, set networking mode to bridged adapter.
+
+## Setting Up Kubernetes Cluster
+
+### Configurating Master Nodes (VMs)
+
+For each master node (VM), performs the following steps:
+
+- Change host name of VM, in this cluster, we will use master nodes host names as "sds-k3s-master", "sds-k3s-master-2", and "sds-k3s-master-3".
+
+    - Change host name in `/etc/hostname`
+```
+sudo nano /etc/hostname
+```
+
+    - Change 
