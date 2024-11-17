@@ -121,9 +121,27 @@ For this cluster, K3s will be used, which is lightweight Kubernetes.
 - For the **FIRST master node**, download K3s and set up the server.
 
   ```bash
-  curl -sfL https://get.k3s.io | sh -s - server --disable traefik --flannel-backend host-gw --tls-san <FIRST_MASTER_NODE_IP> --bind-address <FIRST_MASTER_NODE_IP> --advertise-address <FIRST_MASTER_NODE_IP> -- 
-  node-ip <FIRST_MASTER_NODE_IP> --cluster-init --write-kubeconfig-mode 644 --kube-controller-manager-arg "node-monitor-grace-period=16s" --kube-controller-manager-arg "node-monitor-period=4s" --kube-apiserver- 
-  arg "default-not-ready-toleration-seconds=20" --kube-apiserver-arg "default-unreachable-toleration-seconds=20" --kubelet-arg "node-status-update-frequency=4s"
+  curl -sfL https://get.k3s.io | sh -s - server --disable traefik --flannel-backend host-gw --tls-san <FIRST_MASTER_NODE_IP> --bind-address <FIRST_MASTER_NODE_IP> --advertise-address <FIRST_MASTER_NODE_IP> --node-ip <FIRST_MASTER_NODE_IP> --cluster-init --write-kubeconfig-mode 644 --kube-controller-manager-arg "node-monitor-grace-period=16s" --kube-controller-manager-arg "node-monitor-period=4s" --kube-apiserver-arg "default-not-ready-toleration-seconds=20" --kube-apiserver-arg "default-unreachable-toleration-seconds=20" --kubelet-arg "node-status-update-frequency=4s"
   ```
 
   Replace `<FIRST_MASTER_NODE_IP>` with first master node IP. For this cluster, it is `192.168.0.170`.
+
+- In the FIRST master node, get the node token from `/var/lib/rancher/k3s/server/node-token` to use for joining other nodes.
+
+  ```
+  sudo cat /var/lib/rancher/k3s/server/node-token
+  ```
+
+- For the **REMAINING master nodes**, join to the first master node to make HA cluster (High Availability Cluster).
+
+  ```bash
+  curl -sfL https://get.k3s.io | K3S_TOKEN=<K3S_TOKEN> sh -s - server --disable=traefik --flannel-backend=host- gw --write-kubeconfig-mode=644 --server <FIRST_MASTER_NODE_SERVER> --tls-san=<MY_NODE_IP> --kube-controller-manager-arg "node-monitor-grace-period=16s" --kube-controller-manager-arg "node-monitor-period=4s" --kube-apiserver-arg "default-not-ready-toleration-seconds=20" --kube-apiserver-arg "default-unreachable-toleration-seconds=20" --kubelet-arg "node-status-update-frequency=4s"
+  ```
+
+  Replace the following parameters
+  
+  `<K3S_TOKEN>`: The token received from previous step
+  
+  `<FIRST_MASTER_NODE_SERVER>`: The server URI to first master node (for this cluster, it is `https://192.168.0.170:6443`)
+
+  `<MY_NODE_IP>`: The IP of current master node (for this cluster, it is `192.168.0.180` and `192.168.0.190`)
