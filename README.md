@@ -26,9 +26,29 @@ For each master node (VM), performs the following steps:
 
 - Change host name of VM, in this cluster, we will use master nodes host names as "sds-k3s-master", "sds-k3s-master-2", and "sds-k3s-master-3".
 
-    - Change host name in `/etc/hostname`
+  - Access the `/etc/hostname`.
+ 
+  ```
+  sudo nano /etc/hostname
+  ```
+
+  - Change hostname in the file.
+  - Access the `/etc/hosts`.
+ 
+  ```
+  sudo nano /etc/hostname
+  ```
+
+  - Look for the hostname which must be changed and replace it with new hostname.
+
+- Disable swap because of how Kubernetes manages resources.
+
 ```
-sudo nano /etc/hostname
+sudo swapoff -a
 ```
 
-    - Change 
+- Reboot the VM to apply changes.
+
+```
+sudo reboot
+```
