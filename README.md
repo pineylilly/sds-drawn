@@ -226,3 +226,37 @@ wget https://github.com/pineylilly/sds-final-project/raw/refs/heads/main/k3s-dis
 - Now you will see notification shown in Discord.
 
   ![image](https://github.com/user-attachments/assets/321a59b7-5b02-41d2-9fd0-acc88a92e533)
+
+## Deploying an Application
+
+The application we will deploy named "Drawn", which is application for collaborative drawing. It consists of frontend, API gateway, 4 backend services, and ingress.
+
+- Download Kubernetes YAML files from `k8s` directory in this repository (you can click this [link](https://github.com/pineylilly/sds-final-project/tree/main/k8s)). Copy this directory to master nodes via SFTP.
+
+- For the environment variables for each container, open the YAML files and set the environment variables as follow:
+  - User Management Service (`/k8s/services/user-management-service.yml`)
+    - `DATABASE_URL`: The connection string of PostgreSQL database (cloud database), you may create database in [Supabase](https://supabase.com/).
+    - `JWT_SECRET`: The secret of JWT, you can set the new random secret.
+    - `JWT_KEY`: The key of JWT, you can set the new random key.
+  
+- Create NGINX Ingress Controller by applying the YAML file.
+  
+  ```
+  cd ingress
+  kubectl apply -f nginx-ingress-controller.yml
+  ```
+
+- Create ingress by applying ingress YAML file.
+  
+  ```
+  kubectl apply -f ingress.yml
+  ```
+
+- Create all services include frontend, API gateway, and 4 backend services.
+  
+  ```
+  cd ../services
+  kubectl apply -f .
+  ```
+
+  __Warning: If your internet speed is slow. It may use very long time to create pods and services or you will get error on pulling images from Docker Hub. If this happen, you may create the services one by one.__
