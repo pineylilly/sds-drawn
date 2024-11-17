@@ -52,3 +52,37 @@ sudo swapoff -a
 ```
 sudo reboot
 ```
+
+### Configurating Worker Nodes (Raspberry Pi)
+
+For each worker node (Raspberry Pi), performs the following steps:
+
+- Change host name of Raspberry Pi, in this cluster, we will use worker nodes host names as "workernode1", "workernode2", "workernode3", "workernode4", and "workernode5".
+
+  - Access the `/etc/hostname`.
+ 
+  ```
+  sudo nano /etc/hostname
+  ```
+
+  - Change hostname in the file.
+  - Access the `/etc/hosts`.
+ 
+  ```
+  sudo nano /etc/hostname
+  ```
+
+  - Look for the hostname which must be changed and replace it with new hostname.
+
+- Disable swap because of how Kubernetes manages resources. Also we want to pernamently disable swap, so we will set the `CONF_SWAPSIZE` to zero.
+
+```
+# Disable swap
+sudo swapoff -a
+
+# To turn of swap permanently we need to update the `CONF_SWAPSIZE` in `dphys-swapfile` file to `0`
+sudo nano /etc/dphys-swapfile
+
+# In the file, set the following configuration
+CONF_SWAPSIZE=0
+```
