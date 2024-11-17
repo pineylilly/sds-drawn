@@ -179,6 +179,12 @@ The cluster should look fine now (you can verify by running `kubectl get nodes`)
     }
   ```
 
+- We don't want to let the K8s scheduler to schedule any pod to master node, so we will taint the master node with `NoSchedule`. Set the taint for every master node as follow.
+  
+  ```bash
+  kubectl taint nodes <MASTER_NODE_NAME> node-role.kubernetes.io/master=:NoSchedule
+  ```
+
 ### Setting Up Discord Notification
 
 The notification will be shown when the server is initialized or the status of the nodes are changed.
