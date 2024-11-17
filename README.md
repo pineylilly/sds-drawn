@@ -86,3 +86,18 @@ sudo nano /etc/dphys-swapfile
 # In the file, set the following configuration
 CONF_SWAPSIZE=0
 ```
+
+- Set up cgroup of Raspberry Pi.
+
+```
+sudo nano /boot/cmdline.txt
+
+# Add below into THE END of the current line
+cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory
+```
+
+- Reboot the Raspberry Pi to apply the changes.
+
+```
+sudo reboot
+```
