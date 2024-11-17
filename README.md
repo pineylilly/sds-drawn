@@ -28,30 +28,30 @@ For each master node (VM), performs the following steps:
 
   - Access the `/etc/hostname`.
  
-  ```
-  sudo nano /etc/hostname
-  ```
+    ```
+    sudo nano /etc/hostname
+    ```
 
   - Change hostname in the file.
   - Access the `/etc/hosts`.
  
-  ```
-  sudo nano /etc/hostname
-  ```
+    ```
+    sudo nano /etc/hostname
+    ```
 
   - Look for the hostname which must be changed and replace it with new hostname.
 
 - Disable swap because of how Kubernetes manages resources.
 
-```
-sudo swapoff -a
-```
+  ```
+  sudo swapoff -a
+  ```
 
 - Reboot the VM to apply changes.
 
-```
-sudo reboot
-```
+  ```
+  sudo reboot
+  ```
 
 ### Configurating Worker Nodes (Raspberry Pi)
 
@@ -61,52 +61,69 @@ For each worker node (Raspberry Pi), performs the following steps:
 
   - Access the `/etc/hostname`.
  
-  ```
-  sudo nano /etc/hostname
-  ```
+    ```
+    sudo nano /etc/hostname
+    ```
 
   - Change hostname in the file.
   - Access the `/etc/hosts`.
  
-  ```
-  sudo nano /etc/hostname
-  ```
+    ```
+    sudo nano /etc/hostname
+    ```
 
   - Look for the hostname which must be changed and replace it with new hostname.
 
 - Disable swap because of how Kubernetes manages resources. Also we want to pernamently disable swap, so we will set the `CONF_SWAPSIZE` to zero.
 
-```
-# Disable swap
-sudo swapoff -a
-
-# To turn of swap permanently we need to update the `CONF_SWAPSIZE` in `dphys-swapfile` file to `0`
-sudo nano /etc/dphys-swapfile
-
-# In the file, set the following configuration
-CONF_SWAPSIZE=0
-```
+  ```
+  # Disable swap
+  sudo swapoff -a
+  
+  # To turn of swap permanently we need to update the `CONF_SWAPSIZE` in `dphys-swapfile` file to `0`
+  sudo nano /etc/dphys-swapfile
+  
+  # In the file, set the following configuration
+  CONF_SWAPSIZE=0
+  ```
 
 - Set up cgroup of Raspberry Pi.
 
-```
-sudo nano /boot/cmdline.txt
-
-# Add below into THE END of the current line
-cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory
-```
+  ```
+  sudo nano /boot/cmdline.txt
+  
+  # Add below into THE END of the current line
+  cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory
+  ```
 
 - Reboot the Raspberry Pi to apply the changes.
 
-```
-sudo reboot
-```
+  ```
+  sudo reboot
+  ```
 
 ### Connecting to Router and Setting Up Router
 
 - Plug in router and connect all master and worker nodes to router.
   - Connect master nodes to router via Wi-Fi (connect laptops to router's Wi-Fi).
   - Connect worker nodes to router via Ethernet cable.
+- Enter [http://192.168.0.1](http://192.168.0.1/) to config the router, the laptop used to config the router must connect to router's Wi-Fi.
+- Connect router to external Wi-Fi. (Because the nodes require to download K3s, pull images from Docker Hub, and connect to cloud database)
+- Set static IPs to master and worker nodes. In this cluster, we set the static IPs to each node as follow:
+  - For master nodes, set IPs as `192.168.0.170`, `192.168.0.180`, and `192.168.0.190`.
+  - For worker nodes, set IPs as `192.168.0.171`, `192.168.0.172`, `192.168.0.173`, `192.168.0.174`, and `192.168.0.175`.
+- Reboot the router to apply static IPs to all nodes.
 
-- Enter [http://192.168.0.1](http://192.168.0.1/) to config the router, the laptop used to config the router must be in the same network as router.
-- 
+### Setting Up Kubernetes
+
+For this cluster, K3s will be used, which is lightweight Kubernetes.
+
+- For the **FIRST master node**, download K3s and set up the server.
+
+  ```bash
+  curl -sfL https://get.k3s.io | sh -s - server --disable traefik --flannel-backend host-gw --tls-san <FIRST_MASTER_NODE_IP> --bind-address <FIRST_MASTER_NODE_IP> --advertise-address <FIRST_MASTER_NODE_IP> -- 
+  node-ip <FIRST_MASTER_NODE_IP> --cluster-init --write-kubeconfig-mode 644 --kube-controller-manager-arg "node-monitor-grace-period=16s" --kube-controller-manager-arg "node-monitor-period=4s" --kube-apiserver- 
+  arg "default-not-ready-toleration-seconds=20" --kube-apiserver-arg "default-unreachable-toleration-seconds=20" --kubelet-arg "node-status-update-frequency=4s"
+  ```
+
+  Replace `<FIRST_MASTER_NODE_IP>` with first master node IP. For this cluster, it is `192.168.0.170`.
