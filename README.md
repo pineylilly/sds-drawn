@@ -9,3 +9,11 @@ This cluster contains:
 For bonus, the following are performed:
 - **Discord Notification for Node Status**: The notification will be sent to discord when status of any nodes is changed.
 - **High Availability Cluster**: 3 master nodes are connected in the cluster, so that 1 master node can down at a time.
+
+## Creating Ubuntu VMs
+
+We will use Ubuntu VMs as master nodes of the cluster.
+
+- Download Ubuntu VM ISO image from https://ubuntu.com/download/desktop.
+- Create 3 VMs of Ubuntu (using Oracle VirtualBox), each VM must be on different laptop.
+- For each VM, set networking mode to bridged adapter.
