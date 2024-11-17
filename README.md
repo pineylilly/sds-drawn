@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/a681b9b3-10d6-43ff-b8d7-906376f7b23e)# High Availability Kubernetes Cluster with Deploying
+# High Availability Kubernetes Cluster with Deploying
 
 This repository shows how to set up Kubernetes cluster using Ubuntu VMs and Raspberry Pi, and how to deploy application named "Drawn", an application for collaborative drawing.
 
@@ -249,7 +249,7 @@ Because our application require Firebase Storage to store images, we need to cre
 
 ## Deploying an Application
 
-The application we will deploy named "Drawn", which is application for collaborative drawing. It consists of frontend, API gateway, 4 backend services, and ingress.
+The application we will deploy named "Drawn", which is application for collaborative drawing. It consists of frontend, API gateway, 4 backend services, Redis, and ingress.
 
 - Download Kubernetes YAML files from `k8s` directory in this repository (you can click this [link](https://github.com/pineylilly/sds-final-project/tree/main/k8s)). Copy this directory to master nodes via SFTP.
 
@@ -258,15 +258,23 @@ The application we will deploy named "Drawn", which is application for collabora
     - `DATABASE_URL`: The connection string of PostgreSQL database (cloud database), you may create database in [Supabase](https://supabase.com/).
     - `JWT_SECRET`: The secret of JWT, you can set the new random secret.
     - `JWT_KEY`: The key of JWT, you can set the new random key.
-    - `FIREBASE_API_KEY`
-    - `FIREBASE_AUTH_DOMAIN`
-    - `FIREBASE_PROJECT_ID`
-    - `FIREBASE_STORAGE_BUCKET`
-    - `FIREBASE_MESSAGING_SENDER_ID`
-    - `FIREBASE_APP_ID`
+    - `FIREBASE_API_KEY`: API key from Firebase configuration.
+    - `FIREBASE_AUTH_DOMAIN` Authentication domain from Firebase configuration.
+    - `FIREBASE_PROJECT_ID` Project ID from Firebase configuration.
+    - `FIREBASE_STORAGE_BUCKET` Storage bucket from Firebase configuration.
+    - `FIREBASE_MESSAGING_SENDER_ID` Messaging sender ID from Firebase configuration.
+    - `FIREBASE_APP_ID` Application ID from Firebase configuration.
   - Workspace Management Service (`/k8s/services/workspace-management-service.yml`)
     - `DATABASE_URL`: The connection string of PostgreSQL database (cloud database), which is different from user management service database, you may create database in [Supabase](https://supabase.com/) or use the same database, but choose different schema.
   - Collaboration Service (`/k8s/services/collaboration-service.yml`)
+    - `DATABASE_URL`: The connection string of MongoDB database (cloud database), you may create database in [MongDB Atlas](https://www.mongodb.com/products/platform/atlas-database).
+    - `FIREBASE_API_KEY`: API key from Firebase configuration.
+    - `FIREBASE_AUTH_DOMAIN` Authentication domain from Firebase configuration.
+    - `FIREBASE_PROJECT_ID` Project ID from Firebase configuration.
+    - `FIREBASE_STORAGE_BUCKET` Storage bucket from Firebase configuration.
+    - `FIREBASE_MESSAGING_SENDER_ID` Messaging sender ID from Firebase configuration.
+    - `FIREBASE_APP_ID` Application ID from Firebase configuration.
+  - Chat Service (`/k8s/services/chat-service.yml`)
     - `DATABASE_URL`: The connection string of MongoDB database (cloud database), you may create database in [MongDB Atlas](https://www.mongodb.com/products/platform/atlas-database).
   
 - Create NGINX Ingress Controller by applying the YAML file.
@@ -282,7 +290,7 @@ The application we will deploy named "Drawn", which is application for collabora
   kubectl apply -f ingress.yml
   ```
 
-- Create all services include frontend, API gateway, and 4 backend services.
+- Create all services include frontend, API gateway, Redis, and 4 backend services.
   
   ```
   cd ../services
