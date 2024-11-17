@@ -216,3 +216,13 @@ wget https://github.com/pineylilly/sds-final-project/raw/refs/heads/main/k3s-dis
     `<MY_NODE_NAME>`: The name of the current master node (which is `sds-k3s-master`, `sds-k3s-master-2`, or `sds-k3s-master-3`)
 
     `<PATH_TO_NOTIFICATION_BINARY_FILE>`: The path of the binary file of the notification sender downloaded in the step above. (For example, `/home/vboxuser/server-linux-x64-baseline`)
+
+- Reboot all master nodes one by one to start notification sender.
+  
+  ```
+  sudo reboot
+  ```
+
+- Now you will see notification shown in Discord.
+
+  ![image](https://github.com/user-attachments/assets/321a59b7-5b02-41d2-9fd0-acc88a92e533)
