@@ -107,11 +107,21 @@ For each worker node (Raspberry Pi), performs the following steps:
 - Plug in router and connect all master and worker nodes to router.
   - Connect master nodes to router via Wi-Fi (connect laptops to router's Wi-Fi).
   - Connect worker nodes to router via Ethernet cable.
-- Enter [http://192.168.0.1](http://192.168.0.1/) to config the router, the laptop used to config the router must connect to router's Wi-Fi.
-- Connect router to external Wi-Fi. (Because the nodes require to download K3s, pull images from Docker Hub, and connect to cloud database)
-- Set static IPs to master and worker nodes. In this cluster, we set the static IPs to each node as follow:
+- Enter [http://192.168.0.1](http://192.168.0.1/) to config the router, the laptop used to config the router must connect to router's Wi-Fi. The default credential of the router is username `admin` password `admin`.
+- Go to "Operation Mode" tab, then select "WISP", then save.
+
+  ![image](https://github.com/user-attachments/assets/c701c597-525a-4802-b6c1-be8d33aa1d6b)
+
+- Connect router to external Wi-Fi (Because the nodes require to download K3s, pull images from Docker Hub, and connect to cloud database). Go to "Wireless" >> "Basic Settings", then click "Scan" button to scan for wireless. After selecting SSID, fill wireless password in "Wireless Password" input.
+
+  ![image](https://github.com/user-attachments/assets/7ecd1560-8beb-4d21-bcce-eaf961090941)
+
+- Set static IPs to master and worker nodes by going to "DHCP" >> "Address Reservation" tab. In this cluster, we set the static IPs to each node as follow:
   - For master nodes, set IPs as `192.168.0.170`, `192.168.0.180`, and `192.168.0.190`.
   - For worker nodes, set IPs as `192.168.0.171`, `192.168.0.172`, `192.168.0.173`, `192.168.0.174`, and `192.168.0.175`.
+
+  ![image](https://github.com/user-attachments/assets/0042cd45-42be-4773-9bdb-4cc1da633689)
+
 - Reboot the router to apply static IPs to all nodes.
 
 ### Setting Up Kubernetes
